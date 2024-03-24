@@ -18,6 +18,7 @@
     "@astrojs/check": "^0.5.9",
     "@astrojs/node": "^8.2.5",
     "@astrojs/vue": "^4.0.9",
+    "@types/node": "^20.11.30",
     "astro": "^4.4.15",
     "typescript": "^5.4.3"
   }

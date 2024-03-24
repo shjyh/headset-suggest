@@ -1,0 +1,89 @@
+---
+import GlobalLayout from '@/GlobalLayout.astro';
+import { ElLink } from "element-plus"
+
+import { go } from '@/proxy/backend'
+import { URL } from 'node:url';
+
+interface Props {
+    title: string
+}
+
+const { title } = Astro.props
+
+const { isLogin } = await go(Astro, "POST", "/auth/is-login");
+
+Astro.locals.isLogin = isLogin;
+
+if(isLogin) {
+    const { info } = await go(Astro, "POST", "/auth/get-userinfo");
+    Astro.locals.userInfo = info
+}
+
+const url = new URL(Astro.url);
+const currentPath = url.pathname + url.search;
+
+const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
+---
+
+<GlobalLayout title={title}>
+    <header>
+        <nav>
+            {
+                isLogin ? 
+                    <ElLink underline={false}>{ Astro.locals.userInfo.name }</ElLink> : 
+                    <>
+                        <ElLink href={loginUrl} underline={false} type="danger">亲，请登录</ElLink>
+                        <ElLink href="/register" underline={false}>免费注册</ElLink>
+                    </>
+            }
+            <div class="space"></div>
+            <ElLink href="/cart" underline={false}>购物车</ElLink>
+            <ElLink href="/fav" underline={false}>收藏夹</ElLink>
+        </nav>
+    </header>
+    <div class="main">
+        <slot />
+    </div>
+</GlobalLayout>
+<style />
+<style>
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #f5f5f5;
+    }
+    
+    header nav {
+        height: var(--nav-height);
+        max-width: var(--page-width);
+        margin: auto;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+    }
+
+    header a + a {
+        margin-left: 12px;
+    }
+
+    header .space {
+        flex: 1;
+    }
+
+    body {
+        --nav-height: 36px;
+        --page-width: 1080px;
+        background: 0 var(--nav-height) repeat-y url(//img.alicdn.com/imgextra/i3/O1CN01PaQurJ1QgnAICTCgg_!!6000000002006-2-tps-1490-2984.png);
+        background-size: cover;
+        overflow-x: hidden;
+    }
+
+    .main {
+        width: var(--page-width);
+        margin: auto;
+        padding-top: var(--nav-height);
+    }
+</style>
