@@ -1,8 +1,6 @@
 ---
 import GlobalLayout from '@/GlobalLayout.astro';
 import { ElLink } from "element-plus"
-
-import { go } from '@/proxy/backend'
 import { URL } from 'node:url';
 
 interface Props {
@@ -24,7 +22,7 @@ const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
             {
                 isLogin ?
                     <>
-                        <ElLink underline={false}>{ userInfo.account }</ElLink>
+                        <ElLink underline={false}>{ userInfo.name || userInfo.account }</ElLink>
                     </>:
                     <>
                         <ElLink href={loginUrl} underline={false} type="danger">亲，请登录</ElLink>
@@ -70,7 +68,7 @@ const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
     body {
         --nav-height: 36px;
         --page-width: 1080px;
-        background: 0 var(--nav-height) repeat-y url(//img.alicdn.com/imgextra/i3/O1CN01PaQurJ1QgnAICTCgg_!!6000000002006-2-tps-1490-2984.png);
+        background: 0 var(--nav-height) repeat-y url(/main_bg.png);
         background-size: cover;
         overflow-x: hidden;
     }

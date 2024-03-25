@@ -1,4 +1,3 @@
-import type { AstroGlobal } from "astro";
 import axios from "axios";
 
 const HOST = "http://localhost:8080";
@@ -17,12 +16,11 @@ function resolveUrl(url: string) {
 }
 
 export async function pass(req: Request): Promise<Response> {
-   
-    
+    const text = await req.text();
     const res = await axios.request({
         url: resolveUrl(req.url),
         method: req.method,
-        data: await req.json(),
+        data: text ? JSON.parse(text) : undefined,
         headers: {
             "Cookie": req.headers.get("Cookie")
         },
