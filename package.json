@@ -10,16 +10,17 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.6.8",
     "element-plus": "^2.6.2",
     "vue": "^3.4.21"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.5.9",
+    "@astrojs/check": "^0.5.10",
     "@astrojs/node": "^8.2.5",
     "@astrojs/vue": "^4.0.9",
     "@types/node": "^20.11.30",
-    "astro": "^4.4.15",
+    "astro": "^4.5.9",
     "typescript": "^5.4.3"
   }
 }

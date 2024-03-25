@@ -5,7 +5,9 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [vue()],
+  integrations: [vue({
+    appEntrypoint: "/src/vue.entry"
+  })],
   output: "server",
   adapter: node({
     mode: "standalone"

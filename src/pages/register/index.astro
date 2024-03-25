@@ -1,0 +1,11 @@
+---
+import GlobalLayout from "@/GlobalLayout.astro";
+import Register from "./_Register.vue";
+
+if(Astro.locals.isLogin) {
+    Astro.redirect("/");
+}
+---
+<GlobalLayout title="用户注册">
+    <Register client:load />
+</GlobalLayout>

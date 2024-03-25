@@ -1,7 +1,8 @@
 ---
+import List from "./_List.vue";
 import Layout from "./_layout.astro";
 ---
 
-<Layout title="主页">
-    <div>aaa</div>
+<Layout title="商城主页">
+    <List client:load isLogin={Astro.locals.isLogin} />
 </Layout>

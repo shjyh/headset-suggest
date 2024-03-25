@@ -50,24 +50,16 @@ export async function pass(req: Request): Promise<Response> {
     })
 }
 
-export async function go(Astro: AstroGlobal, method: "GET" | "POST", url: string, body?: any): Promise<any> {
+export async function go(request: Request, method: "GET" | "POST", url: string, body?: any): Promise<any> {
 
-    const res = await axios.request({
+    const { data } = await axios.request({
         url: resolveUrl(url),
         method,
         headers: {
-            "Cookie": Astro.request.headers.get("Cookie")
+            "Cookie": request.headers.get("Cookie")
         },
         data: body
     });
 
-    if(res.headers["set-cookie"]) {
-        if(Array.isArray(res.headers["set-cookie"])) {
-            Astro.response.headers.set("set-cookie", res.headers["set-cookie"][0]);
-        } else {
-            Astro.response.headers.set("set-cookie", res.headers["set-cookie"]);
-        }
-    }
-
-    return res.data;
+    return data;
 }
