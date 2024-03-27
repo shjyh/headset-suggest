@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ElInputNumber, ElButtonGroup, ElButton } from "element-plus";
+import { ElInputNumber, ElButtonGroup, ElButton, ElMessage } from "element-plus";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ref } from "vue";
+import axios from "axios";
 
 const props = defineProps<{
     detail: any;
@@ -26,24 +27,42 @@ function addCart() {
     }
 }
 
-function collect() {
+async function collect() {
     if(!props.isLogin) {
         window.location.href = loginUrl;
         return;
     }
+
+    if(isCollected.value) {
+        await axios.post("/api/headphone/cancel-collect/" + props.detail.id);
+        ElMessage({
+            message: "取消收藏",
+            type: "success"
+        });
+        isCollected.value = false
+    } else {
+        await axios.post("/api/headphone/collect/" + props.detail.id);
+        ElMessage({
+            message: "收藏成功",
+            type: "success"
+        });
+        isCollected.value = true;
+    }
+
 }
 
-const isCollected = ref(false);
+const isCollected = ref(props.detail.isCollected == 1);
+
 </script>
 
 <template>
 <div class="attr">
     <div class="field">品牌：</div>
-    <div class="value">Apple</div>
+    <div class="value">{{ detail.attrs.find((a: any) => a.key === "brand")?.value }}</div>
 </div>
 <div class="attr">
     <div class="field">型号：</div>
-    <div class="value">s2</div>
+    <div class="value">{{ detail.attrs.find((a: any) => a.key === "model")?.value }}</div>
 </div>
 <div class="attr">
     <div class="field">数量：</div>

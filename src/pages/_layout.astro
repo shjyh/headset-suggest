@@ -1,6 +1,7 @@
 ---
 import GlobalLayout from '@/GlobalLayout.astro';
 import { ElLink } from "element-plus"
+import LogoutLink from "./_LogoutLink.vue"
 import { URL } from 'node:url';
 
 interface Props {
@@ -9,11 +10,6 @@ interface Props {
 
 const { isLogin, userInfo } = Astro.locals;
 const { title } = Astro.props
-
-const url = new URL(Astro.url);
-const currentPath = url.pathname + url.search;
-
-const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
 ---
 
 <GlobalLayout title={title}>
@@ -23,13 +19,15 @@ const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
                 isLogin ?
                     <>
                         <ElLink underline={false}>{ userInfo.name || userInfo.account }</ElLink>
+                        <LogoutLink class="ml" client:load />
                     </>:
                     <>
-                        <ElLink href={loginUrl} underline={false} type="danger">亲，请登录</ElLink>
+                        <ElLink href={Astro.locals.loginUrl} underline={false} type="danger">亲，请登录</ElLink>
                         <ElLink href="/register" underline={false}>免费注册</ElLink>
                     </>
             }
             <div class="space"></div>
+            <ElLink href="/" underline={false}>首页</ElLink>
             <ElLink href="/cart" underline={false}>购物车</ElLink>
             <ElLink href="/fav" underline={false}>收藏夹</ElLink>
         </nav>
@@ -46,6 +44,7 @@ const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
         left: 0;
         right: 0;
         background: #f5f5f5;
+        z-index: 10;
     }
     
     header nav {
@@ -57,7 +56,7 @@ const loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
         padding: 0 12px;
     }
 
-    header a + a {
+    header a + a, .ml {
         margin-left: 12px;
     }
 

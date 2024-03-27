@@ -17,6 +17,10 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
     if(isLogin) {
         const { info } = await go(ctx.request, "POST", "/auth/get-userinfo");
         ctx.locals.userInfo = info
+    } else {
+        const url = new URL(ctx.url);
+        const currentPath = url.pathname + url.search;
+        ctx.locals.loginUrl = "/login?redirect=" + encodeURIComponent(currentPath);
     }
     return await next();
 });

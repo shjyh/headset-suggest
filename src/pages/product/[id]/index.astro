@@ -14,10 +14,10 @@ const { detail } = await go(Astro.request, "POST", "/headphone/detail/" + id);
 <Layout title="">
     <div class="detail">
         <div class="box">
-            <ImageSwitch images={detail.imageList} client:load />
+            <ImageSwitch images={detail.images} client:load />
             <div class="info">
                 <ElText tag="h2" class="name" line-clamp="2" >{ detail.name }</ElText>
-                <ElText tag="div" class="price" type="danger">¥ <span class="price-value">1999</span></ElText>
+                <ElText tag="div" class="price" type="danger">¥ <span class="price-value">{ detail.price }</span></ElText>
                 <CartAndBuy detail={detail} isLogin={Astro.locals.isLogin}  client:load />
             </div>
         </div>

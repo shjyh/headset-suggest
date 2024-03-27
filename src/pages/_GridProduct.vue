@@ -12,9 +12,10 @@ const props = defineProps<{
         <el-card shadow="hover">
             <div class="card-body">
                 <el-image class="image" fit="cover" :src="'/assets/' + item.mainImage" />
-                <div>
+                <div class="side">
                     <el-text tag="h3" class="title" :line-clamp="2">{{ item.name }}</el-text>
-                    <el-text tag="div" class="price" type="danger">¥ <span class="price-value">1999</span></el-text>
+                    <div class="info">{{ item.attrs.find((a: any) => a.key === "brand")?.value }} / {{ item.attrs.find((a: any) => a.key === "model")?.value }}</div>
+                    <el-text tag="div" class="price" type="danger">¥ <span class="price-value">{{ item.price }}</span></el-text>
                 </div>
             </div>
         </el-card>
@@ -54,6 +55,14 @@ const props = defineProps<{
 
 .price {
     margin-top: 24px;
+}
+
+.side {
+    flex: 1;
+}
+
+.info {
+    margin-top: 12px;
 }
 
 .price-value {

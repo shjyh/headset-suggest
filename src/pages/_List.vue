@@ -2,7 +2,7 @@
 import { ElInput, ElButton, ElTabs, ElTabPane, ElBadge, ElAlert } from "element-plus";
 import { Search } from "@element-plus/icons-vue"
 import GridProduct from "./_GridProduct.vue";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import axios from "axios";
 
 const props = defineProps<{
@@ -11,9 +11,12 @@ const props = defineProps<{
 
 const currentTab = ref<"list" | "popular" | "like">("list");
 
-const list = ref([]);
-const popular = ref([]);
-const like = ref([]);
+const list = ref<any[]>([]);
+const popular = ref<any[]>([]);
+const like = ref<any[]>([]);
+
+const search = ref("");
+const confirmSearch = ref("");
 
 watch(() => currentTab.value, async(currentTab) =>{
     switch(currentTab) {
@@ -34,22 +37,42 @@ watch(() => currentTab.value, async(currentTab) =>{
     }
 }, { immediate: !import.meta.env.SSR })
 
+const filteredList = computed(() => {
+    if(!confirmSearch.value) return list.value;
+    const reg = new RegExp(confirmSearch.value, "i");
+    return list.value.filter(item => item.name.match(reg));
+});
+
+const filteredPopular = computed(() => {
+    if(!confirmSearch.value) return popular.value;
+    const reg = new RegExp(confirmSearch.value, "i");
+    return popular.value.filter(item => item.name.match(reg));
+});
+
+const filteredLike = computed(() => {
+    if(!props.isLogin) return [];
+    if(!confirmSearch.value) return like.value;
+    const reg = new RegExp(confirmSearch.value, "i");
+    return like.value.filter(item => item.name.match(reg)); 
+});
+
 </script>
 
 <template>
     <div class="wrapper">
         <div class="search-bar">
-            <el-input class="search" size="large" 
+            <el-input class="search" size="large"  type="search"
                 :prefix-icon="Search" placeholder="请输入搜索关键词"
+                v-model="search" @keydown.enter="confirmSearch = search"
             />
-            <el-button class="search-button" type="primary">搜索</el-button>
+            <el-button class="search-button" type="primary" @click="confirmSearch = search">搜索</el-button>
         </div>
         <el-tabs class="tabs" type="border-card" v-model="currentTab" @tab-change="currentTab = $event as any">
             <el-tab-pane name="list" label="商品列表">
-                <GridProduct :list="list" />
+                <GridProduct :list="filteredList" />
             </el-tab-pane>
             <el-tab-pane name="popular" label="最受欢迎">
-                <GridProduct :list="popular" />
+                <GridProduct :list="filteredPopular" />
             </el-tab-pane>
             <el-tab-pane name="like">
                 <template #label>
@@ -59,7 +82,7 @@ watch(() => currentTab.value, async(currentTab) =>{
                 </template>
                 <el-alert v-if="!props.isLogin" title="个性化推荐需要用户登录" type="error" :closable="false"/>
                 <template v-else>
-                    <GridProduct :list="like" />
+                    <GridProduct :list="filteredLike" />
                 </template>
             </el-tab-pane>
         </el-tabs>
