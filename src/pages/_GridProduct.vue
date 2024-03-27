@@ -13,7 +13,7 @@ const props = defineProps<{
             <div class="card-body">
                 <el-image class="image" fit="cover" :src="'/assets/' + item.mainImage" />
                 <div>
-                    <el-text tag="h3" class="title" truncated :line-clamp="2">{{ item.name }}</el-text>
+                    <el-text tag="h3" class="title" :line-clamp="2">{{ item.name }}</el-text>
                     <el-text tag="div" class="price" type="danger">¥ <span class="price-value">1999</span></el-text>
                 </div>
             </div>
@@ -49,6 +49,7 @@ const props = defineProps<{
 .title {
     font-size: 1.2em;
     font-weight: bold;
+    line-height: 1.3;
 }
 
 .price {
