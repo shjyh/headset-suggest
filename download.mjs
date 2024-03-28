@@ -45,6 +45,7 @@ let currentIndex = 0;
 try {
     for(let p of productsJson) {
         currentIndex ++;
+        if(p.skip) continue;
         const images = [];
         const contents = [];
         for(let image of p.allImages) {
@@ -56,8 +57,10 @@ try {
 
         sqls.push(`INSERT INTO \`headphone\` VALUES (${currentIndex}, '${p.title}', '${
             escapeJson(JSON.stringify(images))
-        }', '${contents.join("\\n")}', 1, ${p.price.toFixed(2)}, '[{\"key\":\"brand\",\"value\":\"${p.brand}\"},{\"key\":\"model\",\"value\":\"${p.model}\"}]', 0)`)
+        }', '${contents.join("\\n")}', 1, ${p.price.toFixed(2)}, '[{\"key\":\"brand\",\"value\":\"${p.brand}\"},{\"key\":\"model\",\"value\":\"${p.model}\"}]', 0);`)
+        p.skip = true;
     }
+    await fs.writeFile("./products.json", JSON.stringify(productsJson, null, 4), "utf-8");
 } catch(e) {
     console.error(e);
 }finally{
