@@ -39,20 +39,21 @@ const currentSelect = ref<any>(null);
     <el-input class="search" type="search" v-model="search" placeholder="请输入搜索关键词" />
 </el-row>
 <el-table class="table" :data="showUserList" stripe border>
-    <el-table-column prop="id" label="id" />
+    <el-table-column prop="id" label="id" width="80px" />
     <el-table-column prop="account" label="账号" />
     <el-table-column prop="name" label="姓名" />
     <el-table-column prop="phone" label="手机号" />
-    <el-table-column label="姓别">
+    <el-table-column label="性别" width="60px" >
         <template #default="scope">
             <template v-if="scope.row.gender === 1">男</template>
             <template v-if="scope.row.gender === 2">女</template>
         </template>
     </el-table-column>
-    <el-table-column prop="age" label="年龄" />
-    <el-table-column label="操作">
+    <el-table-column prop="age" label="年龄" width="80px" />
+    <el-table-column label="操作" width="120px">
         <template #default="scope">
             <el-button link type="primary" @click="currentSelect = scope.row">编辑</el-button>
+            <el-button link type="primary">数据</el-button>
         </template>
     </el-table-column>
 </el-table>

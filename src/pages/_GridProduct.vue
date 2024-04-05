@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElCard, ElImage, ElText, ElPagination } from "element-plus";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 const props = defineProps<{
     list: any[]
 }>();
@@ -8,6 +8,10 @@ const props = defineProps<{
 const currentPage = ref(1);
 
 const showList = computed(() => props.list.slice(10 * (currentPage.value - 1), 10 * currentPage.value))
+
+watch(() => props.list, ()=>{
+    currentPage.value = 1;
+})
 
 </script>
 

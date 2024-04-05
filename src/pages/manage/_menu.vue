@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ElMenu, ElMenuItem, ElIcon } from "element-plus";
-import { PieChart, User, Goods } from "@element-plus/icons-vue";
+import { User, Goods, ChatDotSquare } from "@element-plus/icons-vue";
 import { computed } from "vue";
 import { navigate } from "astro:transitions/client";
 import LogoutLink from "../_LogoutLink.vue";
 
 const menus = [
-    { label: "Dashboard", icon: PieChart, path: "/" },
     { label: "用户管理", icon: User, path: "/user" },
     { label: "商品管理", icon: Goods, path: "/product" },
+    { label: "评论管理", icon: ChatDotSquare, path: "/comment"}
 ]
 
 const activate = computed(() => {
