@@ -1,11 +1,13 @@
 ---
 interface Props {
-    title: string
+    title: string;
+    SPA?: boolean;
 }
 
-const { title } = Astro.props
+const { title, SPA } = Astro.props
 
-import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css';
+import { ViewTransitions } from "astro:transitions";
 ---
 
 <!DOCTYPE html>
@@ -14,6 +16,10 @@ import 'element-plus/dist/index.css'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{ title }</title>
+    {
+        SPA && <ViewTransitions />
+    }
+    
 </head>
 <body>
     <slot />

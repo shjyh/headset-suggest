@@ -74,6 +74,11 @@ async function register() {
         }catch(e) {
             window.location.replace("/");
         }
+    } else {
+        await ElMessageBox.alert(data.msg, "注册失败", {
+            type: "warning",
+            confirmButtonText: "确定"
+        })
     }
 }
 

@@ -27,11 +27,11 @@ function run() {
 
     for(let attr of attrs) {
         const v = attr.innerText;
-        if(v.startsWith("品牌：")) {
-            brand = v.replace("品牌：", "");
+        if(v.includes("品牌：")) {
+            brand = v.split("品牌：")[1];
         }
-        else if(v.startsWith("型号：")) {
-            model = v.replace("型号：", "");
+        else if(v.includes("型号：")) {
+            model = v.split("型号：")[1];
         }
 
         if(brand && model) {
@@ -39,7 +39,9 @@ function run() {
         }
     }
 
-    const contentImage = [...document.querySelectorAll(".desc-root img")].map(n => n.dataset.src || n.src)
+    const contentImage = [...document.querySelectorAll(".desc-root img")]
+        .map(n => n.dataset.src || n.src)
+        .map(src => src.startsWith("//") ? ("https:" + src) : src)
     contentImage.pop();
 
     return {

@@ -1,0 +1,21 @@
+---
+import GlobalLayout from "@/GlobalLayout.astro";
+import Menu from "./_menu.vue";
+---
+
+<GlobalLayout title="商城管理" SPA>
+    <Menu client:only />
+    <div class="main">
+        <slot />
+    </div>
+</GlobalLayout>
+
+<style>
+    body {
+        --menu-width: 200px;
+    }
+    .main {
+        margin-left: var(--menu-width);
+        padding: 24px;
+    }
+</style>

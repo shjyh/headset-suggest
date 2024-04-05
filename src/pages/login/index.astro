@@ -5,11 +5,15 @@ import GlobalLayout from "@/GlobalLayout.astro";
 
 
 const url = new URL(Astro.request.url);
-const redirect = url.searchParams.get("redirect") || "/";
+const isManage = url.searchParams.get("manage") === "1";
+const redirect = url.searchParams.get("redirect") || (isManage ? "/manage" : "/");
+
 if(Astro.locals.isLogin) {
-    return Astro.redirect(redirect);
+    if((isManage && Astro.locals.userInfo.isAdmin) || !isManage) {
+        return Astro.redirect(redirect);
+    }
 }
 ---
 <GlobalLayout title="商城登录">
-    <Login client:load redirect={redirect} />
+    <Login client:load redirect={redirect} isManage={isManage} />
 </GlobalLayout>
