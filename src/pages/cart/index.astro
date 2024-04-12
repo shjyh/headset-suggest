@@ -1,0 +1,12 @@
+---
+import Layout from "../_layout.astro";
+import Cart from "./_Cart.vue";
+
+if(!Astro.locals.isLogin) {
+    return Astro.redirect(Astro.locals.loginUrl || "");
+}
+---
+
+<Layout title="购物车">
+    <Cart client:only />
+</Layout>

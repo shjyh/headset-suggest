@@ -1,0 +1,86 @@
+---
+import { go } from "@/proxy/backend";
+import Layout from "../_layout.astro";
+import { ElCard, ElText } from "element-plus";
+if(!Astro.locals.isLogin) {
+    return Astro.redirect(Astro.locals.loginUrl || "");
+}
+const { list } = await go(Astro.request, "POST", "/order/list");
+---
+
+<Layout title="我的订单">
+    <ElCard class="list" shadow="never">
+        <Fragment slot="header">我的订单</Fragment>
+        <div class="container">
+            {
+                list.map((item: any) => (
+                    <ElCard class="item" shadow="never">
+                        <a href={"/order/detail/" + item.id}>
+                            <ElText tag="h4" type="success">交易成功</ElText>
+                            <div class="p-list">
+                                {
+                                    item.items.map((item: any) => (<img src={"/assets/" + item.itemImage} />))
+                                }
+                            </div>
+                            <div class="info">
+                                <div>交易时间: {item.createdAt}</div>
+                            </div>
+                            <div class="info">
+                                <div>共 {item.items.length} 件商品</div>
+                                <div>订单价格: <ElText type="danger">¥{item.amt.toFixed(2)}</ElText></div>
+                            </div>
+                        </a>
+                    </ElCard>
+                ))
+            }
+        </div>
+    </ElCard>
+</Layout>
+
+<style>
+    a,a:visited,a:active {
+        color: inherit;
+        text-decoration: none;
+    }
+    .list {
+        margin-top: 20px;
+    }
+    .container {
+        --gap: 20px;
+        --col: 2;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--gap);
+    }
+    .item {
+        width: calc((100% - var(--gap) * (var(--col) - 1)) / var(--col));
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        text-decoration: none;
+    }
+    .p-list {
+        border: 1px solid #e1e1e1;
+        padding: 6px;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+    .p-list img {
+        width: 80px;
+        height: 80px;
+        display: inline-block;
+        vertical-align: middle;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 6px;
+    }
+    .p-list img + img {
+        margin-left: 10px;
+    }
+    .info {
+        margin-top: 18px;
+        display: flex;
+        gap: 20px;
+        font-size: 0.9em;
+    }
+</style>

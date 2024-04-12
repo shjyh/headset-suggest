@@ -18,7 +18,8 @@ const { title } = Astro.props
             {
                 isLogin ?
                     <>
-                        <ElLink underline={false}>{ userInfo.name || userInfo.account }</ElLink>
+                        <ElLink underline={false} href="/profile">{ userInfo.name || userInfo.account }</ElLink>
+                        <ElLink underline={false} href="/order/list">我的订单</ElLink>
                         <LogoutLink class="ml" client:load />
                     </>:
                     <>

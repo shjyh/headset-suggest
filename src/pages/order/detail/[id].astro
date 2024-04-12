@@ -1,0 +1,84 @@
+---
+import { go } from "@/proxy/backend";
+import Layout from "../../_layout.astro";
+
+if(!Astro.locals.isLogin) {
+    return Astro.redirect(Astro.locals.loginUrl || "");
+}
+
+const { detail }  = await go(Astro.request, "POST", "/order/detail/" + Astro.params.id);
+---
+<Layout title="订单详情">
+    <h2 class="status">交易成功</h2>
+    <div class="card">
+        {
+        detail.items.map((item: any) => (
+            <a class="item" href={"/product/" + item.itemId}>
+                <img class="main-image" src={"/assets/" + item.itemImage} />
+                <div>
+                    <div class="name">{item.itemName}</div>
+                    <div class="num">数量: x{item.num}</div>
+                    <div class="price">单价：<span class="price-value">¥ {item.price.toFixed(2)}</span></div>
+                    <div class="price">实付款：<span class="price-value">¥ {(item.price * item.num).toFixed(2)}</span></div>
+                </div>
+            </a>
+        ))
+        }
+        <div class="order">
+            <div>实付款：<span class="price-value">¥{detail.amt.toFixed(2)}</span></div>
+            <div>交易时间: {detail.createdAt}</div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .status {
+        font-size: 1.8em;
+        line-height: 2em;
+        padding-top: 20px;
+    }
+    .card {
+        background: white;
+        border-radius: 12px;
+        margin-top: 12px;
+    }
+    .item {
+        padding: 20px;
+        display: flex;
+        text-decoration: none;
+        color: inherit;
+    }
+    .item:active {
+        color: inherit;
+    }
+    .item:visited {
+        color: inherit;
+    }
+    .main-image {
+        border-radius: 12px;
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        object-position: center;
+        margin-right: 12px;
+    }
+    .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .num {
+        margin-top: 12px;
+    }
+    .price {
+        margin-top: 12px;
+    }
+    .price-value {
+        color: var(--el-color-danger);
+    }
+    .order {
+        padding: 20px;
+        line-height: 2em;
+    }
+</style>
+

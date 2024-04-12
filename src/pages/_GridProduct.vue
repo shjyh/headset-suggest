@@ -24,7 +24,7 @@ watch(() => props.list, ()=>{
                 <div class="side">
                     <el-text tag="h3" class="title" :line-clamp="2">{{ item.name }}</el-text>
                     <el-text tag="div" :line-clamp="1" class="info">{{ item.attrs.find((a: any) => a.key === "brand")?.value }} / {{ item.attrs.find((a: any) => a.key === "model")?.value }}</el-text>
-                    <el-text tag="div" class="price" type="danger">¥ <span class="price-value">{{ item.price }}</span></el-text>
+                    <el-text tag="div" class="price" type="danger">¥ <span class="price-value">{{ item.price.toFixed(2) }}</span></el-text>
                 </div>
             </div>
         </el-card>

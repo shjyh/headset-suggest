@@ -1,0 +1,12 @@
+---
+import Layout from "../_layout.astro";
+import Profile from "./_Profile.vue";
+
+if(!Astro.locals.isLogin) {
+    return Astro.redirect(Astro.locals.loginUrl || "");
+}
+---
+
+<Layout title="个人中心">
+    <Profile client:load />
+</Layout>

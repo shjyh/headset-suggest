@@ -17,3 +17,9 @@ if(Astro.locals.isLogin) {
 <GlobalLayout title="商城登录">
     <Login client:load redirect={redirect} isManage={isManage} />
 </GlobalLayout>
+
+<style>
+    body {
+        background-image: url("/login_bg.webp");
+    }
+</style>

@@ -17,11 +17,11 @@ const { detail } = await go(Astro.request, "POST", "/headphone/detail/" + id);
             <ImageSwitch images={detail.images} client:load />
             <div class="info">
                 <ElText tag="h2" class="name" line-clamp="2" >{ detail.name }</ElText>
-                <ElText tag="div" class="price" type="danger">¥ <span class="price-value">{ detail.price }</span></ElText>
-                <CartAndBuy detail={detail} isLogin={Astro.locals.isLogin}  client:load />
+                <ElText tag="div" class="price" type="danger">¥ <span class="price-value">{ detail.price.toFixed(2) }</span></ElText>
+                <CartAndBuy detail={detail} isLogin={Astro.locals.isLogin} loginUrl={Astro.locals.loginUrl || ''}  client:load />
             </div>
         </div>
-        <Content detail={detail} client:load />
+        <Content detail={detail} isLogin={Astro.locals.isLogin} loginUrl={Astro.locals.loginUrl || ''} client:load />
     </div>
 </Layout>
 

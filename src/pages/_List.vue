@@ -29,7 +29,7 @@ const priceSort = ref<"asc" | "desc" | "default">("default");
 
 function filterList(list: any[]) {
     const c = filterCondation.value;
-    const newList = (!c.search.trim() && !c.tags.length && !c.minPrice && !c.maxPrice) ? list : list.filter(item => {
+    const newList = (!c.search.trim() && !c.tags.length && !c.minPrice && !c.maxPrice) ? [...list] : list.filter(item => {
         if(c.search.trim() && (
             !item.name.includes(c.search) ||
             !item.attrs.find((a: any) => a.value.includes(c.search))

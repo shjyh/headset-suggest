@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ElInputNumber, ElButtonGroup, ElButton, ElMessage } from "element-plus";
+import { ElInputNumber, ElButtonGroup, ElButton, ElMessage, ElMessageBox } from "element-plus";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { ref } from "vue";
 import axios from "axios";
@@ -7,29 +7,53 @@ import axios from "axios";
 const props = defineProps<{
     detail: any;
     isLogin: boolean;
+    loginUrl: string;
 }>();
 defineOptions({ inheritAttrs: false })
 
 const num = ref(1);
-const loginUrl = import.meta.env.SSR ? "" : "/login?redirect=" + encodeURIComponent(location.pathname + location.search);
 
-function buy() {
+async function buy() {
     if(!props.isLogin) {
-        window.location.href = loginUrl;
+        window.location.href = props.loginUrl;
         return;
     }
+    const ok = await ElMessageBox.confirm("确定要购买吗?", "模拟下单", {
+        
+    }).then(() => true).catch(() => false);
+
+    if(!ok) return;
+
+    const result = await axios.post("/api/order/create", {
+        items: [{
+            itemId: props.detail.id,
+            num: num.value
+        }]
+    });
+
+    window.location.href = "/order/detail/" + result.data.id;
 }
 
-function addCart() {
+async function addCart() {
     if(!props.isLogin) {
-        window.location.href = loginUrl;
+        window.location.href = props.loginUrl;
         return;
     }
+
+    await axios.post("/api/cart/add", {
+        itemId: props.detail.id,
+        num: num.value
+    });
+
+    ElMessage({
+        message: "加入购物车成功",
+        type: "success"
+    });
 }
 
 async function collect() {
     if(!props.isLogin) {
-        window.location.href = loginUrl;
+        window.location.href = props.loginUrl;
         return;
     }
 

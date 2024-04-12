@@ -50,14 +50,19 @@ export async function pass(req: Request): Promise<Response> {
 
 export async function go(request: Request, method: "GET" | "POST", url: string, body?: any): Promise<any> {
 
-    const { data } = await axios.request({
-        url: resolveUrl(url),
-        method,
-        headers: {
-            "Cookie": request.headers.get("Cookie")
-        },
-        data: body
-    });
+    try{
+        const { data } = await axios.request({
+            url: resolveUrl(url),
+            method,
+            headers: {
+                "Cookie": request.headers.get("Cookie")
+            },
+            data: body
+        });
 
-    return data;
+        return data;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
 }
