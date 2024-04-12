@@ -11,7 +11,6 @@ async function getList() {
 
 const tags = ref<string[]>([]);
 
-
 onMounted(()=>{
     getList();
     axios.post("/api/headphone/tags").then(res=>{
@@ -76,7 +75,7 @@ function updateTags(p: any, tags: string[]) {
 
 <template>
 <el-input class="search" type="search" v-model="search" placeholder="请输入搜索关键词" />
-<el-table class="table" :data="showProductList" height="80vh" border>
+<el-table class="table" :data="showProductList" max-height="80vh" border>
     <el-table-column prop="id" label="id" width="80px" />
     <el-table-column label="主图" width="100px">
         <template #default="scope">

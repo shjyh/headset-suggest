@@ -1,0 +1,7 @@
+---
+import Layout from "../../_layout.astro";
+import Detail from "./_Detail.vue";
+---
+<Layout>
+    <Detail uid={ Number.parseInt(Astro.params.id || '') } client:only />
+</Layout>

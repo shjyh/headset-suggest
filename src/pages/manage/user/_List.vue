@@ -3,6 +3,7 @@ import axios from "axios";
 import { computed, onMounted, ref, watch } from "vue";
 import { ElTable, ElTableColumn, ElPagination, ElButton, ElInput, ElRow } from "element-plus";
 import EditorModal from "./_EditorModal.vue";
+import { navigate } from "astro:transitions/client";
 
 const userList = ref<any[]>([]);
 const currentPage = ref(1);
@@ -31,6 +32,10 @@ const showUserList = computed(() => {
 
 const currentSelect = ref<any>(null);
 
+function viewDetail(id: number) {
+    navigate("/manage/user/detail/" + id);
+}
+
 </script>
 
 <template>
@@ -38,7 +43,7 @@ const currentSelect = ref<any>(null);
     <el-button class="create" type="primary" @click="currentSelect = {}">新建</el-button>
     <el-input class="search" type="search" v-model="search" placeholder="请输入搜索关键词" />
 </el-row>
-<el-table class="table" :data="showUserList" stripe border>
+<el-table class="table" max-height="80vh" :data="showUserList" stripe border>
     <el-table-column prop="id" label="id" width="80px" />
     <el-table-column prop="account" label="账号" />
     <el-table-column prop="name" label="姓名" />
@@ -53,7 +58,7 @@ const currentSelect = ref<any>(null);
     <el-table-column label="操作" width="120px">
         <template #default="scope">
             <el-button link type="primary" @click="currentSelect = scope.row">编辑</el-button>
-            <el-button link type="primary">数据</el-button>
+            <el-button link type="primary" @click="viewDetail(scope.row.id)">数据</el-button>
         </template>
     </el-table-column>
 </el-table>
